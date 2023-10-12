@@ -47,3 +47,37 @@ con_haz_rnd <- round(con_haz, digits = 5)
 
 con_haz_car <- mean(conrail$`Hazmat Cars`)
 con_haz_car_rnd <- round(con_haz_car, digits = 5)
+
+# Visuals
+
+# Average Hazmat Cars
+
+haz_car_per_co <- data.frame(
+  Railroad_Company = c("Union Pacific", "Norfolk Southern", "Illinois Central", "Conrail"),
+  avg_num_cars = c(union_haz_car_rnd, norfolk_haz_car_rnd, illi_haz_car_rnd, con_haz_car_rnd)
+)
+
+library(ggplot2)
+
+ggplot(haz_car_per_co,
+       aes(x = reorder(Railroad_Company, avg_num_cars),
+           y = avg_num_cars, fill = factor(Railroad_Company))) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average Number of Hazmat Cars per Railroad Company", x = "Railroad Company", y = "Average Number of Hazmat Cars",
+       fill = "Railroad_Company") + 
+  theme_minimal()
+
+# Average Hazmat Cars Damaged
+
+haz_dam_per_co <- data.frame(
+  Railroad_Company = c("Union Pacific", "Norfolk Southern", "Illinois Central", "Conrail"),
+  avg_car_dam = c(union_haz_rnd, norfolk_haz_rnd, illi_haz_rnd, con_haz_rnd)
+)
+
+ggplot(haz_dam_per_co,
+       aes(x = reorder(Railroad_Company, avg_car_dam),
+           y = avg_car_dam, fill = factor(Railroad_Company))) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average Number of Hazmat Cars Damaged per Railroad Company", x = "Railroad Company", y = "Average Number of Hazmat Cars Damaged",
+       fill = "Railroad Company") + 
+  theme_minimal()
