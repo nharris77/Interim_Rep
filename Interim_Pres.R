@@ -82,3 +82,48 @@ ggplot(haz_dam_per_co,
   labs(title = "Average Number of Hazmat Cars Damaged per Railroad Company", x = "Railroad Company", y = "Average Number of Hazmat Cars Damaged",
        fill = "Railroad Company") + 
   theme_minimal()
+
+# Accidents per Year Total
+
+accidents_per_year <- train_accident %>%
+  group_by(`Report Year`) %>%
+  summarize(Count = n()) %>%
+  filter(Count > 1)
+
+ggplot(accidents_per_year, 
+       aes(x = `Report Year`, y = Count)) +
+  geom_point(size = 2, shape = 19) +
+  geom_smooth(method = "lm", se = FALSE, aes(group = 1)) +
+  labs(
+    title = "Count of Total Railroad Accidents Over the Years",
+    x = "Accident Year",
+    y = "Accident Count"
+  ) +  
+  theme_minimal()
+
+# Accidents per Company
+
+co_accidents_per_year <- train_accident %>%
+  group_by(`Reporting Railroad Name`) %>%
+  summarize(Count = n()) %>%
+  filter(Count > 1)
+
+top_co_acc <- co_accidents_per_year[order(co_accidents_per_year$Count, decreasing = TRUE), ]
+
+# Union Pacific Accidents per Year
+
+union_pacific_acc <- union_pacific %>%
+  group_by(`Report Year`) %>%
+  summarize(Count = n()) %>%
+  filter(Count > 1)
+
+ggplot(union_pacific_acc, 
+       aes(x = `Report Year`, y = Count)) +
+  geom_point(size = 2, shape = 19) +  
+  geom_smooth(method = "lm", se = FALSE, aes(group = 1)) +
+  labs(
+    title = "Number of Union Pacific Accidents Over the Years",
+    x = "Accident Year",
+    y = "Accident Count"
+  ) +  
+  theme_minimal()
